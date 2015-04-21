@@ -8,8 +8,8 @@ Generic synchronous [A* search algorithm](http://en.wikipedia.org/wiki/A*_search
 import { default as aStar } from 'es6-a-star';
 // if this is going to take a while you may want to child_process.fork
 // and pass the results to the parent process
-// see below for options
-var path = aStar(options);
+// see below for params
+var path = aStar(params);
 console.log(path);
 ```
 
