@@ -1,18 +1,47 @@
-var assert = require('assert')
-  , StringSet = require('Set')
-  , Heap = require('heap')
-  , dict = require('dict')
+var StringSet = function() {};
+StringSet.prototype.add = function(key) {this[key] = true;};
+StringSet.prototype.contains = function(key) {return this[key];};
+  
+var dict = function() {};
+dict.prototype.set = function(key, value) {this[key] = value;};
+dict.prototype.get = function(key) {return this[key];};
+dict.prototype['delete'] = function(key) {delete this[key];};
 
-module.exports = aStar;
+var Heap = function(comparator) {
+    this._comparator = comparator;
+    this._list = [];
+};
+Heap.prototype.push = function(value) {
+    this._list.unshift(value);
+    this._list.sort(this._comparator);
+};
+Heap.prototype.pop = function() {
+    return this._list.shift();
+};
+Heap.prototype.size = function() {
+    return this._list.length;
+};
 
 function aStar(params) {
-  assert.ok(params.start !== undefined);
-  assert.ok(params.isEnd !== undefined);
-  assert.ok(params.neighbor);
-  assert.ok(params.distance);
-  assert.ok(params.heuristic);
-  if (params.timeout === undefined) params.timeout = Infinity;
-  assert.ok(!isNaN(params.timeout));
+    if(params.start === undefined) {
+        throw new Error('No starting node');
+    }
+    if(typeof params.isEnd !== 'function') {
+        throw new Error('No isEnd function provided');
+    }
+    if(typeof params.neighbor !== 'function') {
+        throw new Error('No neighbors function provided');
+    }
+    if(typeof params.distance !== 'function') {
+        throw new Error('No distance function provided');
+    }
+    if(typeof params.heuristic !== 'function') {
+        throw new Error('No heuristic function provided');
+    }
+    
+    if(params.timeout !== undefined && typeof params.timeout !== 'number') {
+        throw new Error('Optional parameter timeout must be a number');
+    }
   var hash = params.hash || defaultHash;
 
   var startNode = {
@@ -25,7 +54,7 @@ function aStar(params) {
   // leave .parent undefined
   var closedDataSet = new StringSet();
   var openHeap = new Heap(heapComparator);
-  var openDataMap = dict();
+  var openDataMap = new dict();
   openHeap.push(startNode);
   openDataMap.set(hash(startNode.data), startNode);
   var startTime = new Date();
@@ -81,7 +110,7 @@ function aStar(params) {
       neighborNode.f = gFromThisNode + neighborNode.h;
       if (neighborNode.h < bestNode.h) bestNode = neighborNode;
       if (update) {
-        openHeap.heapify();
+        //openHeap.heapify();
       } else {
         openHeap.push(neighborNode);
       }
@@ -113,3 +142,5 @@ function defaultHash(node) {
 function heapComparator(a, b) {
   return a.f - b.f;
 }
+
+export default aStar;

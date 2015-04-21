@@ -1,17 +1,18 @@
 {
-  "name": "a-star",
-  "version": "0.2.0",
+  "name": "es6-a-star",
+  "version": "0.0.0",
   "description": "Generic synchronous A* search algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js"
+    "test": "mocha"
   },
-  "repository": "git://github.com/superjoe30/node-astar.git",
-  "author": "Andrew Kelley",
+  "repository": "git://github.com/acbabis/es6-a-star",
+  "author": "Alex Babis",
   "license": "BSD",
-  "dependencies": {
-    "Set": "^0.4.1",
-    "dict": "^1.4.0",
-    "heap": "^0.2.3"
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "es6-module-loader": "^0.11.1",
+    "mocha": "^2.2.4"
   }
 }
