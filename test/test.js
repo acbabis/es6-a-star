@@ -39,7 +39,7 @@ var planarNeighbors = function(xy) {
 
 describe('A star', function() {
     before(function(done) {
-        System.import('index').then(function(module) {
+        System.import('es6-a-star').then(function(module) {
             aStar = module.default;
             done();
         }).catch(function(error) {
